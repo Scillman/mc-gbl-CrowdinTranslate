@@ -42,7 +42,7 @@ In your build.gradle, at the very top (before `plugins`), add this:
 ```
 buildscript {
     dependencies {
-        classpath 'de.guntram.mcmod:crowdin-translate:1.2'
+        classpath 'de.guntram.mcmod:crowdin-translate:1.3+1.17'
     }
     repositories {
         maven {
@@ -53,7 +53,10 @@ buildscript {
 }
 ```
 
-and somewhere later (after plugins) add:
+(note that you can use this no matter which Minecraft version you're compiling
+for, even if the maven version number says 1.17).
+
+Then, somewhere later (after plugins) add:
 
 ```
 apply plugin: 'de.guntram.mcmod.crowdin-translate'
@@ -91,10 +94,14 @@ repositories {
 	}
 }
 dependencies {
-    modImplementation "de.guntram.mcmod:crowdin-translate:1.2"
-    include "de.guntram.mcmod:crowdin-translate:1.2"
+    modImplementation "de.guntram.mcmod:crowdin-translate:<version>"
+    include "de.guntram.mcmod:crowdin-translate:<version>"
 }
 ```
+
+where `version` is currently either `1.3+1.16` or `1.3+1.17`.
+(The `1.3+1.16` version actually works for all versions from 1.15.2 to 20w48a,
+20w49a introduced an incompatible change. 1.3+1.17 works from 1.17 on.)
 
 and this to your ClientModInitializer:
 
@@ -126,20 +133,31 @@ This will download the translations from
 `https://crowdin.com/project/projectname`
 to `assets/modid/lang`.
 
+### What if I have the translation files for several mods in the same crowdin project?
 
+Since version 1.3, you can override the translation source name that
+crowdin-translate checks for. So, if your mods are named foo, bar, and baz,
+you can have one single crowdin project that has them all, and have file names
+`foo.json`, `bar.json` and `thisisnotbaz.json` for your source.
 
-### Getting started
-(this needs some redoing)
-- Create an account on CrowdIn (https://crowdin.com)
-- Optional but recommended: apply for a open source membership so you can start multiple projects, for free
-- Create a project. This will ask for a project name, and a project address. 
-If possible, select your address so the identifier matches your mod id
-(the mod `foobar` should have `https://crowdin.com/project/foobar`).
-- Switch the source language from English to English, United States. This is not
-100% neccesary, but will make things easier, especially if your original json
-file is named `en_us.json`.
-- Add the target languages you want to use. (In a future version of CrowdinTranslate,
-there will be an easy way to consistently set the languages for a collection 
-of mods)
-- Once your project is created, upload your en_us.json. Then, do some translations,
-or get people to do that for you.
+Assuming your crowdin project name is `allmymods`,
+adjust the above use cases like this:
+
+* manual usage:
+```
+java -jar crowdintranslate-<version>.jar allmymods foo foo
+java -jar crowdintranslate-<version>.jar allmymods bar bar
+java -jar crowdintranslate-<version>.jar allmymods baz thisisnotbaz
+```
+
+* usage in gradle: add a 'jsonSourceName' parameter
+
+```
+crowdintranslate.jsonSourceName = 'thisisnotbaz'
+```
+
+* usage in your `ClientModInitializer`: use the 3 argument call:
+
+```
+CrowdinTranslate.downloadTranslations("allmymods", "baz", "thisisnotbaz");
+```

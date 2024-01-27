@@ -6,13 +6,17 @@
     },
     "custom": {
         "ThanksGoTo": "LambdAurora for letting me use the virtual resource pack loader",
-        "modmenu:api": true
+        "modmenu": {
+            "badges": [
+                "library"
+	    ]
+	}
     },
     "mixins": [
         "mixins.crowdintranslate.json"
     ],
     "depends": {
-      "fabric": "*"
+      "fabric-resource-loader-v0": "*"
     },
     "name": "CrowdinTranslate",
     "description": "Downloads translations (xx_xx.json) files from Crowdin",
