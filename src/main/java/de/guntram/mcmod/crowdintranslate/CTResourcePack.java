@@ -1,18 +1,17 @@
 package de.guntram.mcmod.crowdintranslate;
 
-import com.mojang.logging.LogUtils;
+//import com.mojang.logging.LogUtils;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.*;
-import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import net.minecraft.resource.InputSupplier;
 import net.minecraft.resource.ResourcePack;
 import net.minecraft.resource.ResourceType;
 import net.minecraft.resource.metadata.ResourceMetadataReader;
 import net.minecraft.util.Identifier;
-import org.slf4j.Logger;
+//import org.slf4j.Logger;
 
 /**
  * Code taken from LambdAurora, oral permission on Discord on 2020-10-04
@@ -21,7 +20,7 @@ import org.slf4j.Logger;
 public class CTResourcePack implements ResourcePack
 {
     private final List<String> namespaces = new ArrayList<>();
-    private static final Logger LOGGER = LogUtils.getLogger();
+    //private static final Logger LOGGER = LogUtils.getLogger();
     
     public CTResourcePack() {
         for (String s: CrowdinTranslate.registeredMods()) {

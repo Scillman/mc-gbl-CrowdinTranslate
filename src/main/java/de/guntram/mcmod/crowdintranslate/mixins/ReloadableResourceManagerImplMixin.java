@@ -4,7 +4,9 @@ import de.guntram.mcmod.crowdintranslate.CTResourcePack;
 
 import java.util.ArrayList;
 import java.util.List;
-import net.minecraft.resource.*;
+import net.minecraft.resource.ReloadableResourceManagerImpl;
+import net.minecraft.resource.ResourceType;
+import net.minecraft.resource.ResourcePack;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;

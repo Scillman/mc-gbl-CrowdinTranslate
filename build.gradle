@@ -1,14 +1,17 @@
 plugins {
-    id 'fabric-loom' version '0.11.+'
+    id 'fabric-loom' version '1.5.+'
     id 'java-gradle-plugin'
     id 'maven-publish'
 }
 
-sourceCompatibility = 17
-targetCompatibility = 17
+ext.Versions = new Properties();
+Versions.load(file("version-files/mcversion-1.19.3.properties").newReader())
+
+sourceCompatibility = JavaVersion.VERSION_17
+targetCompatibility = JavaVersion.VERSION_17
 
 archivesBaseName = "crowdin-translate"
-version = "1.4+1.19.3"
+version = "${project.version}+${Versions['minecraft_version']}"
 
 loom {
     mixin.defaultRefmapName = "crowdin-translate-refmap.json"
@@ -26,10 +29,10 @@ processResources {
 // They are only included to make loom happy.
 // Use old versions intentionally to make this work with a broad range of MCs.
 dependencies {
-    minecraft "com.mojang:minecraft:1.19.3"
-    mappings "net.fabricmc:yarn:1.19.3+build.2:v2"
-    modImplementation "net.fabricmc:fabric-loader:0.14.11"
-    modRuntimeOnly fabricApi.module("fabric-resource-loader-v0", "0.68.1+1.19.3")
+    minecraft "com.mojang:minecraft:${Versions['minecraft_version']}"
+    mappings "net.fabricmc:yarn:${Versions['yarn_mappings']}:v2"
+    modImplementation "net.fabricmc:fabric-loader:${Versions['loader_version']}"
+    modRuntimeOnly fabricApi.module("fabric-resource-loader-v0", "${Versions['fabric_version']}")
 }
 
 
@@ -62,16 +65,31 @@ group = "de.guntram.mcmod"
 publishing {
     publications {
         mavenJava(MavenPublication) {
+            //groupId = 'de.guntram.mcmod'
             from components.java
         }
     }
     repositories {
         maven {
-            url = "file://tmp/mymavenrepo"
+            url = "${projectDir}/../../.m2-repo"
         }
     }
 }
 
-task mypublish(dependsOn: publish, type: Exec) {
-    commandLine "rsync", "-av", "/tmp/mymavenrepo/", "maven@minecraft.guntram.de:/var/www/html/maven/"
-}
+//group = "de.guntram.mcmod"
+//publishing {
+//    publications {
+//        mavenJava(MavenPublication) {
+//            from components.java
+//        }
+//    }
+//    repositories {
+//        maven {
+//            url = "file://tmp/mymavenrepo"
+//        }
+//    }
+//}
+//
+//task mypublish(dependsOn: publish, type: Exec) {
+//    commandLine "rsync", "-av", "/tmp/mymavenrepo/", "maven@minecraft.guntram.de:/var/www/html/maven/"
+//}
