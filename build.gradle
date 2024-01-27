@@ -5,7 +5,7 @@ plugins {
 }
 
 ext.Versions = new Properties();
-Versions.load(file("version-files/mcversion-1.19.4.properties").newReader())
+Versions.load(file("version-files/mcversion-1.20.2.properties").newReader())
 
 sourceCompatibility = JavaVersion.VERSION_17
 targetCompatibility = JavaVersion.VERSION_17
